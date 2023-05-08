@@ -7,6 +7,7 @@ const check = value => {
     return "Failed";
   }
 }
+
 console.log(check(9));
 console.log(check(2));
 console.log(check(11));
