@@ -6,10 +6,9 @@ const hundredPromises = (a) => {
     setTimeout(() =>{
       if( a === 1){ // я використовую "а" для емуляції умови при якій проміси будуть не дійсними
         resolved("resolved")
-      } else (
+      } else {
         rejected(new Error())
-
-      )
+      }
     }, 1000)
   })
 }
