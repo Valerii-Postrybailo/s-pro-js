@@ -1,4 +1,4 @@
-#Basic JS tasks
+# Basic JS tasks
 
 1. Write a function that returns true if the given argument is a number.
 
@@ -16,7 +16,7 @@
 
 8. Write a function that displays numbers from 1 to 100 on the screen. At the same time, instead of numbers that are multiples of 3, the program should display the word "Foo", and instead of numbers that are multiples of five, the word "Bar". If the number is a multiple of fifteen, the program should output the word 'FooBar'.
 
-#Asynchronous JS
+# Asynchronous JS
 
 1. Write a function that returns a Promise that will be resolved after 1 second with the value "Hello, world!".
 
