@@ -15,7 +15,7 @@ const hundredPromises = (a) => {
 
 const fulfieldPromises = []
 
-for (i=0; i < 100; i++){
+for (let i=0; i < 100; i++){
   fulfieldPromises.push(hundredPromises(1))
 }
 

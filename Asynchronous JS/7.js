@@ -7,48 +7,40 @@
 
 function download(url, errorFirstCallback) {
   // ...Виконує якусь асинхронну операцію, для прикладу:
-  // setTimeout(() => errorFirstCallback(new Error("Async error message")), 10);
-  setTimeout(() => errorFirstCallback(null, {content:"Some content"}), 10);
+  setTimeout(() => errorFirstCallback(new Error("Async error message")), 10);
+  // setTimeout(() => errorFirstCallback(null, {content:"Some content"}), 10);
 }
 
 // /* МОЖЕТЕ ЗМІНИТИ КОД НИЖЧЕ */
 
-// function promiseBased(url) {
-//   return new Promise((resolve, reject) => {
-//     download(url, (err, data) => {
-//       if (err) {
-//         reject(err);
-//       } else {
-//         download(data.nextUrl, (err, data) => {
-//           if (err) {
-//             reject(err);
-//           } else {
-//             download(data.nextUrl, (err, data) => {
-//               if (err) {
-//                 reject(err);
-//               } else {
-//                 resolve(data.content);
-//               }
-//             });
-//           }
-//         });
-//       }
-//     });
-//   });
-// }
+function test(url, onSuccess, onError) {
+  download(url, (err, data) => {
+    if (err) return onError(err);
 
-// promiseBased("https://example.com/")
-//   .then((content) => {
-//     console.log("Finished!", content);
-//   })
-//   .catch((err) => {
-//     console.log("Got an error!");
-//   });
+    download(data.nextUrl, (err, data) => {
+      if (err) return onError(err);
 
+      download(data.nextUrl, (err, data) => {
+        if (err) return onError(err);
 
-/////////////////////////////////////////////////////////
+        onSuccess(data.content);
+      });
+    });
+  });
+}
+test(
+  "https://example.com/",
+  (content) => {
+    console.log("Finished!", content);
+  },
+  (err) => {
+    console.log("Got an error1!",err);
+  }
+);
 
-function downloadAsync(url) {
+///////////////////////////////////////////////////////
+
+function downloadPromise(url) {
   return new Promise((resolve, reject) => {
     download(url, (err, data) => {
       if (err) {
@@ -60,25 +52,45 @@ function downloadAsync(url) {
   });
 }
 
-async function asyncAwait(url, onSuccess, onError) {
-    try {
-      const data1 = await downloadAsync(url);
-      const data2 = await downloadAsync(data1.nextUrl);
-      const data3 = await downloadAsync(data2.nextUrl);
-      onSuccess(data3.content);
-    } catch (err) {
-      onError(err);
-    }
+function promiseBasedTest(url) {
+  return downloadPromise(url)
+    .then(data => downloadPromise(data.nextUrl))
+    .then(data => downloadPromise(data.nextUrl))
+    .then(data => {
+      return data.content;
+    })
+    .catch(err => {
+      throw err;
+    });
+}
+
+promiseBasedTest("https://example.com/")
+  .then(value => {
+    console.log(value);
+  })
+  .catch(err => {
+    console.log("Got an error2!",err);
+  });
+
+
+  /////////////////////////////////////////////
+
+async function asyncAwaitTest(url) {
+  try {
+    const data = await downloadPromise(url);
+    const data_1 = await downloadPromise(data.nextUrl);
+    const data_2 = await downloadPromise(data_1.nextUrl);
+    return data_2.content;
+  } catch (err) {
+    throw err;
   }
-
-asyncAwait(
-  "https://example.com/",
-
-  (content) => {
-    console.log("Finished!", content);
-  },
-
-  (err) => {
-    console.log("Got an error!", err);
-  }
-);
+}
+  
+asyncAwaitTest("https://example.com/")
+  .then(value => {
+    console.log(value);
+  })
+  .catch(err => {
+    console.log("Got an error3!",err);
+    
+  });

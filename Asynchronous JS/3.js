@@ -2,9 +2,9 @@
 // Якщо масив порожній, Promise повинен бути resolved зі значенням null.
 
 const returnPromise = (arr)=>{
-  return new Promise ((resolved, rejected) =>{
+  return new Promise ((resolved) =>{
     if (arr.length > 1){
-      resolved(arr.reduce((accum, current) => current >  accum ? current : accum))
+      resolved(Math.max(...arr));
     } else {
       resolved(null)
     }
@@ -13,6 +13,9 @@ const returnPromise = (arr)=>{
 
 
 const testArr = [1, 3, 5, 10, 41, 4, 2]
+const testArr2 = []
+
+
 
 
 returnPromise(testArr).then(value => console.log(value))

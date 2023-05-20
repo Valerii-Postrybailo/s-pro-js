@@ -62,55 +62,27 @@ const returnPromise = ()=>{
 
 // promiseChain() // Середній діапазон виконання 3.300 - 3.800 s.
 
-/////////////////////////////////////////////////
-
-const parallelExecution = () => {
-
-  console.time("timer3")
-
-  const promise = returnPromise().then((value)=>{
-    return returnPromise();
-  });
-
-  promise
-    .then(value =>{
-      console.log(value, "#1")
-      return returnPromise()
-    })
-
-    .then(value =>{
-      console.log(value,"#2")
-    })
-
-  promise
-    .then(value =>{
-      console.log(value, "#3")
-      return returnPromise()
-    })
-
-    .then(value =>{
-      console.log(value, "#4")
-      console.timeEnd("timer3")
-
-    })
-}
-
-parallelExecution() 
-
 ///////////////////////////////////////////////////////
 
-// const promiseChain = async () => {
-//   console.time("timer");
+const parallelExecution = async() => {
+  console.time("timer");
 
-//   await Promise.all([
-//     returnPromise(),
-//     returnPromise(),
-//     returnPromise(),
-//     returnPromise()
-//   ]);
+  await Promise.all([
+    returnPromise(),
+    returnPromise(),
+    returnPromise(),
+    returnPromise()
+  ]);
 
-//   console.log("Finish");
-//   console.timeEnd("timer");
-// };
+  console.log("Finish");
+  console.timeEnd("timer");
+};
 
-// promiseChain(); // Середній діапазон виконання +- 3.200 s.
+parallelExecution(); // Середній діапазон виконання +- 3.200 s.
+
+
+//Хоча були деякі скачки і довгі затримки в обох варіантах, мабуть звязані з роботою комп'ютера,
+// можна сказати, що паралельне виконання було швидше (+- 3.200 s.) ніж послідовне, яке здебільшого 
+//  було у діапазоні від 3300 до 3800 s. 
+
+
