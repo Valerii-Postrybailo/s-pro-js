@@ -36,11 +36,11 @@ If the request became resolved with a certain value, the function will return a 
 
 7. Edit the test function, prepare two new versions with different names: promise-based and async-await version. You can change how the function is called.
 
-/\*DO NOT CHANGE THIS FUNCTION.
+DO NOT CHANGE THIS FUNCTION.
 
 - An example function that executes asynchronously.
 - The function accepts one argument - error-first callback.\*/
-
+```
 function download(url, errorFirstCallback) {
 // ...Performs some asynchronous operation, for example:
 // setTimeout(() => errorFirstCallback(new Error("Async error message")), 10);
@@ -64,12 +64,14 @@ if (err) return onError(err);
 
 });
 }
+
 test(
-"https://example.com/",
-(content) => {
-console.log("Finished!", content);
-},
-(err) => {
-console.log("Got an error!");
-}
+    "https://example.com/",
+    (content) => {
+    console.log("Finished!", content);
+    },
+    (err) => {
+    console.log("Got an error!");
+    }
 );
+```
